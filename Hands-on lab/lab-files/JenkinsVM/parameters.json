@@ -1,0 +1,72 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "adminPassword": {
+            "value": null
+        },
+        "adminUserName": {
+            "value": "jenkinsadmin"
+        },
+        "authenticationType": {
+            "value": "password"
+        },
+        "dnsPrefix": {
+            "value": "jenkinsmagarcia"
+        },
+        "publicIPName": {
+            "value": "jenkins-pip"
+        },
+        "publicIPNewOrExisting": {
+            "value": "new"
+        },
+        "publicIPResourceGroup": {
+            "value": "osspaasdevopsjenkins-rg"
+        },
+        "storageAccountType": {
+            "value": "Premium_LRS"
+        },
+        "vmName": {
+            "value": "jenkins"
+        },
+        "vmSize": {
+            "value": "Standard_DS2_v2"
+        },
+        "location": {
+            "value": "canadacentral"
+        },
+        "jenkinsReleaseType": {
+            "value": "LTS"
+        },
+        "jdkType": {
+            "value": "zulu"
+        },
+        "spType": {
+            "value": "managed-identities-for-azure-resources"
+        },
+        "enableCloudAgents": {
+            "value": "vm"
+        },
+        "vnetName": {
+            "value": "jenkins-vnet"
+        },
+        "vnetResourceGroup": {
+            "value": "osspaasdevopsjenkins-rg"
+        },
+        "vnetAddressPrefix": {
+            "value": "10.1.0.0/16"
+        },
+        "vnetNewOrExisting": {
+            "value": "new"
+        },
+        "subnetName": {
+            "value": "jenkins"
+        },
+        "subnetAddressPrefix": {
+            "value": "10.1.0.0/24"
+        },
+        "enableArtifactManager": {
+            "value": "no"
+        }
+    }
+}
