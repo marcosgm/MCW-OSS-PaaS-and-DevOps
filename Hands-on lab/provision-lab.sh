@@ -1,5 +1,5 @@
-LOCATION=canadacentral
-RGNAME=osspaasdevopslab-rg
+LOCATION=useast
+RGNAME=handsonlab-76796
 #LABVMURI=https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2FMCW-OSS-PaaS-and-DevOps%2Fmaster%2FHands-on%20lab%2Flab-files%2FLabVM%2Fazure-deploy.json
 LABVMFILE=lab-files/LabVM/azure-deploy.json
 LABVMUSER=demouser
@@ -9,7 +9,9 @@ az group create -n $RGNAME -l $LOCATION
 az group deployment create -n LabVM -g $RGNAME --template-file $LABVMFILE --mode incremental --no-wait
 
 #must be a unique string
-DNSPREFIX=jenkinsmagarcia213
+SUFFIX=random1232 #we'll use it again later
+DNSPREFIX=jenkins$SUFFIX
+
 #must be an empty resource group
 JENKINSRGNAME=osspaasdevopsjenkins-rg
 JENKINSPASS='Password.1!!'
@@ -25,7 +27,6 @@ az group deployment create --name "$DEPLOYMENTNAME" --resource-group "$JENKINSRG
 
 #Ex 1 - LabVM (Done)
 #Ex 2 - CosmosDB
-SUFFIX=random123
 az cosmosdb create -n best-for-you-db-$SUFFIX --kind MongoDB -g $RGNAME 
 
 #Ex 3 - ACR
@@ -41,9 +42,9 @@ az webapp create -g $RGNAME -p $APPSVCNAME -n $APPSVCNAME --deployment-container
 az ad sp create-for-rbac -n "best-for-you-app" --role contributor --scopes /subscriptions/$SUBID/resourceGroups/$RGNAME
 
 #Ex 6 - Function app and Storage Queues
-SACCNAME=bestforyou$SUFFIXsg
+SACCNAME=bestforyousg$SUFFIX
 az storage account create -n $SACCNAME -g $RGNAME -l $LOCATION --sku Standard_LRS
-az functionapp create -n bestforyouorders$SUFFIX -g $RGNAME  -s $SACCNAME -p $APPSVCNAME
+az functionapp create -n bestforyouorders$SUFFIX -g $RGNAME  -s $SACCNAME -p $APPSVCNAME --runtime node
 
 #Ex 7 - SendGrid and Logic App - UNSUPPORTED IN AZ CLI
 
