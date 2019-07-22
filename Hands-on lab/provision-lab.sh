@@ -14,10 +14,36 @@ DNSPREFIX=jenkinsmagarcia213
 JENKINSRGNAME=osspaasdevopsjenkins-rg
 JENKINSPASS='Password.1!!'
 DEPLOYMENTNAME=$JENKINSRGNAME
-SUBSCRIPTION=0208f208-847e-4ce3-ade5-7349ad21eb72
+SUBID=############## REPLACE FOR YOUR SUBSCRIPTION ID #############
 parametersFilePath="lab-files/JenkinsVM/parameters.json"
 templateFilePath="lab-files/JenkinsVM/template.json"
 az group create -n $JENKINSRGNAME -l $LOCATION
 az group deployment create --name "$DEPLOYMENTNAME" --resource-group "$JENKINSRGNAME" \
   --template-file "$templateFilePath" --parameters "@${parametersFilePath}" \
   --parameters dnsPrefix="$DNSPREFIX"  location="$LOCATION" adminPassword="$JENKINSPASS" --mode incremental  --no-wait
+
+
+#Ex 1 - LabVM (Done)
+#Ex 2 - CosmosDB
+SUFFIX=random123
+az cosmosdb create -n best-for-you-db-$SUFFIX --kind MongoDB -g $RGNAME 
+
+#Ex 3 - ACR
+REGISTRY=bestforyouregistry$SUFFIX
+az acr create -n $REGISTRY -g $RGNAME --sku Basic --admin-enabled true
+
+#Ex 4 - App Service for containers
+APPSVCNAME=best-for-you-app-$SUFFIX
+az appservice plan create -n $APPSVCNAME -g $RGNAME --is-linux --sku P1V2
+az webapp create -g $RGNAME -p $APPSVCNAME -n $APPSVCNAME --deployment-container-image-name $REGISTRY.azurecr.io/best-for-you-organics:latest
+
+#Ex 5 - JenkinsVM + service principal
+az ad sp create-for-rbac -n "best-for-you-app" --role contributor --scopes /subscriptions/$SUBID/resourceGroups/$RGNAME
+
+#Ex 6 - Function app and Storage Queues
+SACCNAME=bestforyou$SUFFIXsg
+az storage account create -n $SACCNAME -g $RGNAME -l $LOCATION --sku Standard_LRS
+az functionapp create -n bestforyouorders$SUFFIX -g $RGNAME  -s $SACCNAME -p $APPSVCNAME
+
+#Ex 7 - SendGrid and Logic App - UNSUPPORTED IN AZ CLI
+

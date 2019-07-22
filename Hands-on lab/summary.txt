@@ -1,0 +1,32 @@
+Ex 1) new LabVM, integrate with github (30 m)
+In this exercise, you will create a local copy of the starter application on your Lab VM, add some sample data to the local MongoDB database, and run the application.
+
+Ex 2) new CosmosDB, add collections to it (30 m)
+In this exercise, you will provision an Azure Cosmos DB account, and then update the starter application's database connection string to point to your new Azure Cosmos DB account. You will then, use mongoimport.exe to migrate the data in your MongoDB database into Cosmos DB collections, and verify with the application that you are connected to your Cosmos DB database.
+
+
+Ex 3) new Container Registry (30 m)
+This exercise walks you through containerizing the existing Best For You Organics Company MERN application using Docker, pushing the image to an Azure Container Registry, then deploying the image to Web App for Containers directly from VS Code.
+
+
+Ex 4) new App Service for containers (10 m)
+In this exercise, you will deploy the containerized app to a Web App for Containers instance from the image stored in your Azure Container Registry.
+
+
+Ex 5) new JenkinsVM, new Azure Service Principal as contributor to Lab's RG (60 m)
+In this exercise, you are going to use Jenkins to implement a continuous integration (CI) and continuous delivery (CD) pipeline to deploy the containerized MERN app to Web App for Containers in Azure.
+
+
+Ex 6) new Function App with new storage account, add queues to it (45m)
+In this task, you will create an Azure Function that will be triggered by orders being added to the Orders collection in Azure Cosmos DB. This Function will trigger whenever a document in the orders collection is inserted or updated. The function checks the processed field on the order document, ensuring only unprocessed orders are sent to the processing queue.
+
+	6.2) In this task, you will add two storage queues to the storage account provisioned when you created your Function App. These queues will be used to store orders and notifications needing to be processed.
+
+	6.3 In this task, you will create a function that will be triggered whenever a document is inserted into the orders collection in your Azure Cosmos DB. This function sends all new orders to a queue for processing and shipping. This function will use a Cosmos DB trigger and an output binding to an Azure Storage Queue.
+
+	6.4) In this task, you will create a second function which will be triggered by the output of the OrdersCosmosTrigger function. This will simulate the order processing and will add items to the notificationqueue if the order processing is complete and the sendNotifications property is true for the order.
+
+
+Ex 7) new sendgrid account, new logic app (30m)
+In this exercise, you will create Logic App which will trigger when an item is added to the notificationqueue Azure Storage Queue. The Logic App will send an email message to the email address included in the notificationqueue message.
+
